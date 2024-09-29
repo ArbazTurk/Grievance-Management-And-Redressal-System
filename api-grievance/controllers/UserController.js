@@ -1,7 +1,6 @@
 const Upload = require("../upload.js");
 let User = require("../models/User.js");
 let bcrypt = require("bcrypt");
-let saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
 let signup = async (req, res) => {
@@ -15,7 +14,7 @@ let signup = async (req, res) => {
 
     let newUser = new User({
       ...req.body,
-      password: bcrypt.hashSync(password, saltRounds),
+      password: bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS)),
     });
 
     await newUser.save();
@@ -143,7 +142,7 @@ let changePassword = async (req, res) => {
       return res.status(401).json({ message: "Incorrect current password" });
     }
 
-    const hashedNewPassword = await bcrypt.hashSync(newPassword, saltRounds);
+    const hashedNewPassword = await bcrypt.hashSync(newPassword, parseInt(process.env.SALT_ROUNDS));
     user.password = hashedNewPassword;
 
     await user.save();

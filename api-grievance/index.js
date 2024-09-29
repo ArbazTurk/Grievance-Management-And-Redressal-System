@@ -7,7 +7,7 @@ const connect = require("./connection");
 const cors = require("cors");
 // const bodyParser = require("body-parser");
 const Admin = require("./routes/Admin.js");
-const User= require('./helper/user.js');
+const UserHelper = require('./helper/user.js');
 
 dotenv.config();
 
@@ -18,15 +18,15 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 
 connect();
-User.createAdmin();
+UserHelper.createAdmin();
 app.use(user);
 app.use(complaint);
 app.use(Admin)
 
-app.listen(3001, (err) => {
+app.listen(process.env.PORT, (err) => {
   if (err) {
     console.log(err);
   } else {
-    console.log("Server is running on 3001....");
+    console.log(`Server is running on ${process.env.PORT}....`);
   }
 });

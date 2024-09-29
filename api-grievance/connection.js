@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const connect = async ()=> {
     try {
-        let connection = await mongoose.connect('mongodb://127.0.0.1:27017/rd-grievance')
+        let connection = await mongoose.connect(process.env.MONGODB_URI)
         console.log("Data base connected...");
     } catch(error) {
         console.log(error)

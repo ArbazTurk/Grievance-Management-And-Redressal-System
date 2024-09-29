@@ -1,8 +1,5 @@
 const User = require("../models/User");
 let bcrypt = require("bcrypt");
-let saltRounds = 10;
-// const jwt = require("jsonwebtoken");
-// const SECRET_KEY = "b2Vfb3ZlcnRoZXJlX29yX3NvbWV0aGluZ19lbHNld2hlcmU";
 
 const GrievanceMemberController = {
   async addGrievanceMember(req, res) {
@@ -17,7 +14,7 @@ const GrievanceMemberController = {
       let newUser = new User({
         ...req.body,
         isVerified: 'Verified',
-        password: bcrypt.hashSync(password, saltRounds),
+        password: bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS)),
       });
   
       await newUser.save();
