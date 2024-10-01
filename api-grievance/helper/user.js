@@ -1,30 +1,3 @@
-// let User = require("../models/User.js");
-// let bcrypt = require("bcrypt");
-// let saltRounds = 10;
-// const createAdmin = async (req, res)=> {
-//     try {
-//         let user = await User.findOne({ email: 'arbaz_admin@rdec.in'});
-//         if(!user) {
-//             user = new User();
-//             user.firstName = 'Arbaz';
-//             user.lastName = 'Khan';
-//             user.email = 'arbaz_admin@rdec.in'
-//             user.mobileNo = '1234456788'
-//             user.password =bcrypt.hashSync('admin@786', saltRounds),
-//             user.userType = 4;
-//             user.isVerified = 'Verified';
-           
-//             user = await user.save();
-//         }
-
-//     } catch(err) {
-
-//     }
-// }
-// module.exports = {
-//     createAdmin
-// }
-
 let User = require("../models/User.js");
 let bcrypt = require("bcrypt");
 
