@@ -26,7 +26,91 @@
       </CCol>
     </CRow>
 
-    <CRow class="gap-5">
+    <CRow class="mb-3">
+      <CFormLabel for="complaintCategory" class="col-sm-3 col-form-label fw-medium">Complaint Category:</CFormLabel>
+      <CCol class="col-sm">
+        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintCategory" v-model="complaint.category" />
+      </CCol>
+    </CRow>
+    
+    <CRow class="mb-3">
+      <CFormLabel for="complaintPriority" class="col-sm-3 col-form-label fw-medium">Complaint Priority:</CFormLabel>
+      <CCol class="col-sm">
+        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintPriority" v-model="complaint.priority" />
+      </CCol>
+    </CRow>
+    
+    <CRow class="mb-3 row">
+      <CFormLabel for="complaintStatus" class="col-sm-3 col-form-label fw-medium">Complaint Status:</CFormLabel>
+      <CCol class="col-sm">
+        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintStatus" v-model="complaint.complaintStatus"/>
+      </CCol>
+    </CRow>
+    
+    <CRow class="mb-3 row">
+      <CFormLabel for="document" class="col-sm-3 col-form-label fw-medium">Document:</CFormLabel>
+      <CCol class="col-sm">
+        <p readonly class="form-control-plaintext" id="document">
+          <a :href="complaint.document" target="_blank" v-if="complaint.document">View Document</a>
+          <span v-else>N/A</span>
+        </p>
+      </CCol>
+    </CRow>
+
+    <CRow class="mb-3" v-if="(complaint.communicationTimeStamps.length && complaint.communicationTimeStamps[0])">
+      <CFormLabel for="complaintInitiatedAt" class="col-sm-3 col-form-label fw-medium">Complaint Initiated At:</CFormLabel>
+      <CCol class="col-sm">
+        <CFormInput type="text" readonly class="form-control-plaintext text-justify fw-medium" id="complaintInitiatedAt" :value="convertDate(complaint.communicationTimeStamps[0])" />
+      </CCol>
+    </CRow>
+    
+    <CRow class="mb-3">
+      <CFormLabel for="complaintDescription" class="col-sm-3 col-form-label fw-medium">Complaint Description:</CFormLabel>
+      <CCol class="col-sm">
+        <p readonly class="form-control-plaintext text-justify" id="complaintDescription">{{ complaint.description[0] }}</p>
+      </CCol>
+    </CRow>
+    
+    <CRow class="mb-3">
+      <CFormLabel for="complaintRecipient" class="col-sm-3 col-form-label fw-medium">Complaint Recipient:</CFormLabel>
+      <CCol class="col-sm">
+        <CFormInput 
+          type="text" 
+          readonly 
+          class="form-control-plaintext" 
+          id="complaintRecipient" 
+          :value="complaint.complaintRecipient.firstName + ' ' + complaint.complaintRecipient.lastName" 
+        />
+      </CCol>
+    </CRow>
+    
+    <CRow class="mb-3">
+      <CFormLabel for="response" class="col-sm-3 col-form-label fw-medium">Response:</CFormLabel>
+      <CCol class="col-sm">
+        <CFormInput 
+          type="text" 
+          readonly 
+          class="form-control-plaintext" 
+          id="response" 
+          :value="complaint.remarks[0] || 'Not Received Yet'" 
+        />
+      </CCol>
+    </CRow>
+    
+    <CRow class="mb-3 " v-if="(complaint.remarks.length && complaint.communicationTimeStamps.length && complaint.communicationTimeStamps[0])">
+      <CFormLabel for="firstResponseAt" class="col-sm-3 col-form-label fw-medium">First Response At:</CFormLabel>
+      <CCol class="col-sm">
+        <CFormInput 
+          type="text" 
+          readonly 
+          class="form-control-plaintext fw-medium" 
+          id="firstResponseAt"
+          :value="convertDate(complaint.communicationTimeStamps[1])" 
+        />
+      </CCol>
+    </CRow>
+
+    <!-- <CRow class="gap-5">
       <CCol xs="3" class="align-items-start">
         <CFormLabel class="fw-medium">Complaint Category:</CFormLabel>
       </CCol>
@@ -107,7 +191,7 @@
       <CCol xs="7">
         <p style="text-align: justify;font-weight: bold">{{ convertDate(complaint.communicationTimeStamps[1]) }} </p>
       </CCol>
-    </CRow>
+    </CRow> -->
     <CRow>
       <CCol>
         <div v-if="complaint.description[1]">
