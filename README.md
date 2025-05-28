@@ -7,7 +7,6 @@ A MEVN Stack web application for efficient grievance management and redressal in
 - **User-friendly Interface**: Easy to navigate and use.
 - **Role-based Access**: Different access levels for students, staff, and faculty.
 - **Grievance Tracking**: Submit, track, and manage grievances efficiently.
-- **Notifications**: Email notifications for status updates.
 - **Secure and Reliable**: Built with security best practices in mind.
 
 ## Tech Stack
