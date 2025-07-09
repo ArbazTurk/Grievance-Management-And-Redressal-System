@@ -6,14 +6,24 @@ import { useStore } from 'vuex'
 // import AppBreadcrumb from '@/components/AppBreadcrumb.vue'
 import AppHeaderDropdownAccnt from '@/components/AppHeaderDropdownAccnt.vue'
 import { useSidebarStore } from '@/stores/sidebar.js'
+import { useThemeStore } from '@/stores/theme.js'
 
 const headerClassNames = ref('mb-4 p-0')
 const { colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
 const sidebar = useSidebarStore()
 
+const themeStore = useThemeStore()
+
 const currentTime = ref('')
 const store = useStore()
 const userName = store.state.userName
+
+const changeTheme = (newTheme) => {
+  // CoreUI के विज़ुअल थीम और localStorage को अपडेट करें
+  setColorMode(newTheme)
+  // अपने Pinia स्टोर की स्टेट को भी अपडेट करें
+  themeStore.toggleTheme(newTheme)
+}
 
 onMounted(() => {
   setInterval(() => {
@@ -82,7 +92,7 @@ onMounted(() => {
             <CIcon v-else-if="colorMode === 'light'" icon="cil-sun" size="lg" />
             <CIcon v-else icon="cil-contrast" size="lg" />
           </CDropdownToggle>
-          <CDropdownMenu>
+          <!-- <CDropdownMenu>
             <CDropdownItem :active="colorMode === 'light'" class="d-flex align-items-center" component="button"
               type="button" @click="setColorMode('light')">
               <CIcon class="me-2" icon="cil-sun" size="lg" /> Light
@@ -93,6 +103,33 @@ onMounted(() => {
             </CDropdownItem>
             <CDropdownItem :active="colorMode === 'auto'" class="d-flex align-items-center" component="button"
               type="button" @click="setColorMode('auto')">
+              <CIcon class="me-2" icon="cil-contrast" size="lg" /> Auto
+            </CDropdownItem>
+          </CDropdownMenu> -->
+          <CDropdownMenu>
+            <!-- 4. अब `setColorMode` की जगह नए `changeTheme` फंक्शन को कॉल करें -->
+            <CDropdownItem 
+              :active="colorMode === 'light'" 
+              class="d-flex align-items-center" 
+              component="button"
+              type="button" 
+              @click="changeTheme('light')">
+              <CIcon class="me-2" icon="cil-sun" size="lg" /> Light
+            </CDropdownItem>
+            <CDropdownItem 
+              :active="colorMode === 'dark'" 
+              class="d-flex align-items-center" 
+              component="button"
+              type="button" 
+              @click="changeTheme('dark')">
+              <CIcon class="me-2" icon="cil-moon" size="lg" /> Dark
+            </CDropdownItem>
+            <CDropdownItem 
+              :active="colorMode === 'auto'" 
+              class="d-flex align-items-center" 
+              component="button"
+              type="button" 
+              @click="changeTheme('auto')">
               <CIcon class="me-2" icon="cil-contrast" size="lg" /> Auto
             </CDropdownItem>
           </CDropdownMenu>

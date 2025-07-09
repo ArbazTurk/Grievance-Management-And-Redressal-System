@@ -25,6 +25,18 @@ router.post("/login", (req, res) => {
   UserController.login(req, res);
 });
 
+router.post("/verify-email", (req, res) => {
+  UserController.verifyEmail(req, res);
+});
+
+router.post("/forgot-password", (req, res) => {
+  UserController.forgotPassword(req, res);
+});
+
+router.post("/reset-password", (req, res) => {
+  UserController.resetPassword(req, res);
+});
+
 router.get("/users", auth, (req, res) => {
   UserController.getAllUsers(req, res);
 });

@@ -28,11 +28,18 @@
                   </CInputGroup>
                   <CRow>
                     <CCol :xs="6">
-                      <CButton type="submit" color="dark" class="px-4">Login</CButton>
+                      <CButton 
+  type="submit" 
+  :color="theme === 'light' ? 'dark' : 'light'"
+  variant="outline"
+  class="px-4"
+>
+  Login
+</CButton>
                     </CCol>
-                    <!-- <CCol :xs="6" class="text-right">
-                      <CButton color="link" class="px-0">Forgot password?</CButton>
-                    </CCol> -->
+                    <CCol :xs="6" class="text-right">
+                      <CButton color="link" class="px-0" @click="forgotPassword">Forgot password?</CButton>
+                    </CCol>
                   </CRow>
                   <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
                 </CForm>
@@ -69,6 +76,8 @@
 import axios from 'axios';
 import { mapActions } from 'vuex';
 // import router from '@/router';
+import { mapState } from 'pinia' // <-- 1. Import mapState from Pinia
+import { useThemeStore } from '@/stores/theme' // <-- 2. Import your Pinia theme store (adjust path if needed)
 
 export default {
   name: 'MemberLogin',
@@ -79,6 +88,9 @@ export default {
       showPassword: false,
       errorMessage: '',
     };
+  },
+  computed: {
+    ...mapState(useThemeStore, ['theme']), // This makes 'theme' available in your template
   },
   methods: {
     ...mapActions(['setUserId', 'setUserType', 'setIsVerified', 'setProfilePhoto', 'setUserName', 'setToken']),
@@ -133,6 +145,25 @@ export default {
     doSignUp() {
       this.$router.push({ name: 'Sign Up' });
     },
+    async forgotPassword() {
+      if (!this.email) {
+        this.errorMessage = 'Please enter your email address.';
+        return;
+      }
+      try {
+        const data = { email: this.email };
+        let url = process.env.BASE_API + '/forgot-password';
+        const response = await axios.post(url, data);
+        if (response.data.success) {
+          this.errorMessage = 'A password reset link has been sent to your email.';
+        } else {
+          this.errorMessage = 'Could not process request. Please try again.';
+        }
+      } catch (error) {
+        this.errorMessage = 'An error occurred.';
+        console.error(error);
+      }
+    }
   },
 };
 </script>

@@ -169,11 +169,10 @@ export default {
             data: data,
           })
           if (response.status === 200) {
-            this.successMessage = 'Sign up successful! You\'re now registered.'
+            this.successMessage = 'Registration successful! Please check your email to verify your account.'
             setTimeout(() => {
               this.successMessage = ''
-              this.$router.push({ name: 'Member Login' });
-            }, 3000)
+            }, 5000)
           }
         } else {
           this.showModal = true;

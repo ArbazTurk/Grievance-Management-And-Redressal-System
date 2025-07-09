@@ -5,6 +5,8 @@ import ProtectedRoute from '../ProtectedRoute.vue';
 // import DefaultLayout from '@/layouts/DefaultLayout'
 import MemberLogin from '../components/MemberLogin'
 import SignUp from '../components/SignUp'
+import EmailVerification from '../components/EmailVerification';
+import ResetPassword from '../components/ResetPassword';
 // import AddComplaint from '../views/dashboard/AddComplaint.vue'
 // import PostComplaint from "../views/postComplaint.vue";
 
@@ -18,6 +20,16 @@ const routes = [
     path: '/signup',
     name: 'Sign Up',
     component: SignUp
+  },
+  {
+    path: '/verify-email',
+    name: 'Email Verification',
+    component: EmailVerification,
+  },
+  {
+    path: '/reset-password',
+    name: 'Reset Password',
+    component: ResetPassword,
   },
   {
     path: '/dashboard',

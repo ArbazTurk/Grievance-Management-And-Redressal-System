@@ -2,27 +2,38 @@ const Upload = require("../upload.js");
 let User = require("../models/User.js");
 let bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { sendMail } = require("../config/mailer");
 
 let signup = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email } = req.body;
     let existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).send("User Already Exists...");
     }
 
-    let newUser = new User({
-      ...req.body,
-      password: bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS)),
+    const token = jwt.sign(req.body, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
     });
 
-    await newUser.save();
+    const verificationLink = `${process.env.FRONTEND_URL}/#/verify-email?verifyToken=${token}`;
+    const mailSent = await sendMail(
+      email,
+      "Verify Your Email Address",
+      `<p>Please click the link to verify your email: <a href="${verificationLink}">${verificationLink}</a></p>`
+    );
+
+    if (!mailSent) {
+      return res.status(500).send({
+        success: false,
+        message: "Failed to send verification email",
+      });
+    }
 
     res.status(200).send({
       success: true,
-      message: "User Created Successfully",
-      data: newUser,
+      message: "Verification email sent. Please check your inbox.",
     });
   } catch (error) {
     console.log(error);
@@ -178,6 +189,93 @@ let updateUser = async (req, res) => {
   }
 };
 
+const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token) {
+      return res.status(400).send({ message: "Token is required" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    const { password, ...userData } = decoded;
+    const hashedPassword = bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS));
+
+    let newUser = new User({
+      ...userData,
+      password: hashedPassword,
+    });
+
+    await newUser.save();
+
+    res.status(201).send({ success: true, message: "Email verified and user created successfully!" });
+  } catch (error) {
+    console.error(error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(400).send({ message: 'Verification link has expired.' });
+    }
+    res.status(500).send({ message: "Failed to verify email" });
+  }
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '15m' });
+    const resetLink = `${process.env.FRONTEND_URL}/#/reset-password?resetToken=${token}`;
+
+    const mailSent = await sendMail(
+      email,
+      "Password Reset Request",
+      `<p>You requested a password reset. Click the link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`
+    );
+
+    if (!mailSent) {
+      return res.status(500).send({ message: "Failed to send reset email" });
+    }
+
+    res.status(200).send({ success: true, message: "Password reset link sent to your email." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error in forgot password flow" });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword) {
+      return res.status(400).send({ message: "Token and new password are required" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    const hashedNewPassword = bcrypt.hashSync(newPassword, parseInt(process.env.SALT_ROUNDS));
+    user.password = hashedNewPassword;
+
+    await user.save();
+
+    res.status(200).send({ success: true, message: "Password has been reset successfully!" });
+  } catch (error) {
+    console.error(error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(400).send({ message: 'Password reset link has expired.' });
+    }
+    res.status(500).send({ message: "Failed to reset password" });
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -186,4 +284,7 @@ module.exports = {
   updateUserById,
   changePassword,
   updateUser,
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
 };
