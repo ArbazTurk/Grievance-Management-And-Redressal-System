@@ -5,7 +5,8 @@
         <h4>Manage Grievance Members</h4>
       </CCol>
       <CCol sm="7" class="text-end">
-        <CButton class="CButton" color="dark" @click="goToAddMember">
+        <CButton class="CButton" :color="theme === 'light' ? 'dark' : 'light'" variant="outline"
+          @click="goToAddMember">
           Add Member
           <CIcon icon="cil-plus" />
         </CButton>
@@ -49,7 +50,7 @@
                 member.status }}</CBadge>
             </CTableDataCell>
             <CTableDataCell>
-              <CButton class="px-2 py-1" color="dark" @click="goToEditMember(member)" title="Edit Member">
+              <CButton class="px-2 py-1" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="goToEditMember(member)" title="Edit Member">
                 <CIcon name="cil-pencil" />
               </CButton>
             </CTableDataCell>
@@ -106,6 +107,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'ManageGrievanceMember',
@@ -119,6 +122,7 @@ export default {
   },
   computed: {
     ...mapState(['token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchMembers(resetPage = false) {
@@ -126,7 +130,7 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = process.env.BASE_API + '/list/grievance-members';
+        let url = import.meta.env.VITE_BASE_API + '/list/grievance-members';
         const response = await axios.get(url, {
           //const response = await axios.get('http://localhost:3001/list/grievance-members', {
           headers: {

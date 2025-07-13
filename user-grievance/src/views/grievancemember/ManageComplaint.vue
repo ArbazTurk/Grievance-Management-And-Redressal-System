@@ -8,10 +8,10 @@
         <h6>Are you sure you want to delete this Complaint?</h6>
       </CModalBody>
       <CModalFooter>
-        <CButton color="danger" class="text-white" @click="confirmDeleteComplaint">
+        <CButton :color="theme === 'light' ? 'danger' : 'light'" variant="outline" class="text-white" @click="confirmDeleteComplaint">
           Delete
         </CButton>
-        <CButton color="secondary" @click="deleteModalVisible = false">
+        <CButton :color="theme === 'light' ? 'secondary' : 'light'" variant="outline" @click="deleteModalVisible = false">
           Cancel
         </CButton>
       </CModalFooter>
@@ -24,7 +24,7 @@
         <h6>You cannot delete this complaint because it has already been resolved.</h6>
       </CModalBody>
       <CModalFooter>
-        <CButton color="secondary" @click="showModal = false">
+        <CButton :color="theme === 'light' ? 'secondary' : 'light'" variant="outline" @click="showModal = false">
           Close
         </CButton>
       </CModalFooter>
@@ -78,7 +78,7 @@
               </CBadge>
             </CTableDataCell>
             <CTableDataCell>
-              <CButton class="px-2 py-1" color="dark" @click="deleteComplaint(complaint)" title="Delete Complaint">
+              <CButton class="px-2 py-1" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="deleteComplaint(complaint)" title="Delete Complaint">
                 <CIcon icon="cil-trash" />
               </CButton>
             </CTableDataCell>
@@ -105,6 +105,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 // import * as icon from '@coreui/icons';
 
 export default {
@@ -123,6 +125,7 @@ export default {
   },
   computed: {
     ...mapState(['token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchComplaints(resetPage = false) {
@@ -130,7 +133,7 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = process.env.BASE_API + '/get/complaints'
+        let url = import.meta.env.VITE_BASE_API + '/get/complaints'
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`,
@@ -162,7 +165,7 @@ export default {
     },
     async confirmDeleteComplaint() {
       try {
-        let url = process.env.BASE_API + '/delete/complaint/' + this.complaintIdToDelete;
+        let url = import.meta.env.VITE_BASE_API + '/delete/complaint/' + this.complaintIdToDelete;
         const response = await axios.delete(url, {
           headers: {
             Authorization: `Bearer ${this.token}`

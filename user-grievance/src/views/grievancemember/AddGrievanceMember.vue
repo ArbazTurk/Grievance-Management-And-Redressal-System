@@ -37,7 +37,8 @@
       </CCol>
       <CCol class="d-flex justify-content-center gap-4 my-5">
         <CButton class="px-3 text-white" type="button" color="danger" @click="cancelAdd">Cancel</CButton>
-        <CButton class="px-3" type="submit" color="dark">Add Member</CButton>
+        <CButton class="px-3" type="submit" :color="theme === 'light' ? 'dark' : 'light'"
+          variant="outline" >Add Member</CButton>
       </CCol>
     </CForm>
     <transition name="slide-fade">
@@ -55,6 +56,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'AddGrievanceMember',
@@ -64,7 +67,7 @@ export default {
       lastName: '',
       email: '',
       mobileNo: '',
-      password: '12345',
+      password: '123456',
       userType: 2,
       profile: '',
       successMessage: ''
@@ -72,11 +75,12 @@ export default {
   },
   computed: {
     ...mapState(['token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async handleSubmit() {
       try {
-        let url = process.env.BASE_API + '/add/grievance-member'
+        let url = import.meta.env.VITE_BASE_API + '/add/grievance-member'
         //const response = await axios.post('http://localhost:3001/add/grievance-member', {
         const response = await axios.post(url, {
           firstName: this.firstName,

@@ -39,7 +39,7 @@
       </CCol>
       <CCol xs="12" class="d-flex justify-content-center gap-4 my-5">
         <CButton class="px-3 text-white" type="button" color="danger" @click="cancelEdit">Cancel</CButton>
-        <CButton class="px-4" type="submit" color="dark">Save</CButton>
+        <CButton class="px-4" type="submit" :color="theme === 'light' ? 'dark' : 'light'" variant="outline">Save</CButton>
       </CCol>
     </CForm>
     <transition name="slide-fade">
@@ -54,6 +54,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'EditUser',
@@ -72,11 +74,12 @@ export default {
   },
   computed: {
     ...mapState(['token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchUser() {
       try {
-        let url = process.env.BASE_API + '/get/user/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/get/user/' + this.$route.params.id
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`
@@ -90,7 +93,7 @@ export default {
     },
     async updateUser() {
       try {
-        let url = process.env.BASE_API + '/update/user/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/update/user/' + this.$route.params.id
         const response = await axios.put(url, {
           status: this.user.status,
           // const response = await axios.put(`http://localhost:3001/update/user/${this.$route.params.id}`, { status: this.user.status,

@@ -73,7 +73,7 @@
       <CCol v-if="!isResolved" xs="12" class="d-flex justify-content-center gap-4 my-5">
         <CButton class="px-3 text-white" type="button" color="danger" @click="cancelEdit">Cancel</CButton>
         <!-- <CButton class="px-3" type="submit" color="dark" :disabled="isSubmitting">Update</CButton> -->
-        <CButton class="px-3" type="button" color="dark"
+        <CButton class="px-3" type="button" :color="theme === 'light' ? 'dark' : 'light'" variant="outline"
           @click="complaint.complaintStatus === 'Resolved' ? showModal = true : updateComplaint()">Update</CButton>
       </CCol>
       <CCol v-else xs="12" class="d-flex justify-content-center gap-4 my-5">
@@ -101,7 +101,7 @@
           </CCol>
         </CRow>
         <div class="d-grid gap-2 d-md-flex mt-3 justify-content-md-start">
-          <CButton color="dark" @click="updateComplaint()" :disabled="rating < 1 || rating > 5">Proceed to update
+          <CButton :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="updateComplaint()" :disabled="rating < 1 || rating > 5">Proceed to update
           </CButton>
         </div>
       </CModalBody>
@@ -116,6 +116,8 @@
 
 <script>
 import axios from 'axios';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 import { mapState } from 'vuex';
 
 export default {
@@ -138,11 +140,12 @@ export default {
   },
   computed: {
     ...mapState(['token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchComplaint() {
       try {
-        let url = process.env.BASE_API + '/get/complaint/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/get/complaint/' + this.$route.params.id
         const response = await axios.get(url,{
         headers: {
           Authorization: `Bearer ${this.token}`
@@ -177,7 +180,7 @@ export default {
         } else {
           formData.append('file', this.complaint.document);
         }
-        let url = process.env.BASE_API + '/update/complaint/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/update/complaint/' + this.$route.params.id
         response = await axios.put(url, formData, {
           //const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}`, formData, {
           headers: {

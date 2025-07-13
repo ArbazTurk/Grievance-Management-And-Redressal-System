@@ -21,7 +21,8 @@
         <!-- <CButton color="dark" @click="goToAddComplaint">
           Add Complaint ➕
         </CButton> -->
-        <CButton class="CButton" color="dark" @click="goToAddComplaint">
+        <CButton class="CButton" :color="theme === 'light' ? 'dark' : 'light'" variant="outline"
+          @click="goToAddComplaint">
           Add Complaint
           <CIcon icon="cil-plus" />
         </CButton>
@@ -58,7 +59,7 @@
                 {{ complaint.priority }}
               </CBadge>
             </CTableDataCell>
-            <CTableDataCell>{{ complaint.complaintRecipient.firstName }} {{ complaint.complaintRecipient.lastName }}
+            <CTableDataCell>{{ complaint.complaintRecipient?.firstName }} {{ complaint.complaintRecipient?.lastName }}
             </CTableDataCell>
             <!-- <CTableDataCell>
             <a :href="complaint.document" target="_blank" v-if="complaint.document">View Document</a>
@@ -74,10 +75,10 @@
             </CTableDataCell>
             <CTableDataCell>
               <div class="d-flex gap-2">
-                <CButton class="px-2 py-1" color="dark" @click="goToEditComplaint(complaint)" title="Edit Complaint">
+                <CButton class="px-2 py-1" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="goToEditComplaint(complaint)" title="Edit Complaint">
                   <CIcon icon="cil-pencil" />
                 </CButton>
-                <CButton class="px-2 py-1" color="dark" @click="viewComplaintDetails(complaint)"
+                <CButton class="px-2 py-1" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="viewComplaintDetails(complaint)"
                   title="View Complaint Details">
                   <font-awesome-icon icon='fa-regular fa-eye' />
                 </CButton>
@@ -101,6 +102,8 @@
 import axios from 'axios';
 // import * as icon from '@coreui/icons';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'PostComplaint',
@@ -115,6 +118,7 @@ export default {
   },
   computed: {
     ...mapState(['_id', 'isVerified', 'token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchComplaints(resetPage = false) {
@@ -122,7 +126,7 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = process.env.BASE_API + '/' + this._id + '/complaints'
+        let url = import.meta.env.VITE_BASE_API + '/' + this._id + '/complaints'
         //const response = await axios.get(`http://localhost:3001/${this._id}/complaints`, {
         const response = await axios.get(url, {
           headers: {

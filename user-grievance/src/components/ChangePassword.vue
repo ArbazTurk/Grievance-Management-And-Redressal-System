@@ -62,7 +62,8 @@
       </CRow>
       <CRow class="my-3">
         <CCol xs="12" class="text-end">
-          <CButton type="submit" color="dark">Change Password</CButton>
+          <CButton type="submit" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" >Change Password
+          </CButton>
         </CCol>
       </CRow>
       <transition name="slide-fade">
@@ -84,6 +85,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 export default {
   name: 'ChangePassword',
   data() {
@@ -104,7 +107,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['_id','token']),
+    ...mapState(['_id', 'token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     togglePasswordVisibility(fieldName) {

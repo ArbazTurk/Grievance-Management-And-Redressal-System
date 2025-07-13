@@ -46,10 +46,14 @@ export default {
         this.errorMessage = 'Passwords do not match.';
         return;
       }
-      const token = this.$route.query.token;
+      const token = this.$route.query.resetToken;
+      console.log(token);
       try {
-        const url = `${process.env.BASE_API}/reset-password?token=${token}`;
-        const response = await axios.post(url, { password: this.password });
+        const url = `${process.env.BASE_API}/reset-password`;
+        const response = await axios.post(url, {
+          token,
+          newPassword: this.password,
+        });
         if (response.data.success) {
           this.successMessage = response.data.message;
           this.errorMessage = '';

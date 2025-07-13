@@ -67,11 +67,11 @@
       </CCol>
       <CCol md="12">
         <CFormLabel class="fw-medium" for="anonymous">Do you want to hide your identity ?</CFormLabel>
-        <CFormCheck id="anonymous" label="Yes" class="mt-2" v-model="anonymous" style="font-size: 20px"/>
+        <CFormCheck id="anonymous" label="Yes" class="mt-2" v-model="anonymous" style="font-size: 20px" />
       </CCol>
       <CCol class="d-flex justify-content-center gap-4 my-5">
         <CButton class="px-3 text-white" type="button" color="danger" @click="cancelAdd">Cancel</CButton>
-        <CButton class="px-3" type="submit" color="dark" :disabled="isSubmitting">Submit Complaint</CButton>
+        <CButton class="px-3" type="submit" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" :disabled="isSubmitting">Submit Complaint</CButton>
       </CCol>
     </CForm>
     <transition name="slide-fade">
@@ -86,6 +86,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'AddComplaint',
@@ -104,6 +106,7 @@ export default {
   },
   computed: {
     ...mapState(['_id','token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async handleSubmit() {
@@ -131,7 +134,7 @@ export default {
         }
 
         // const response = await axios.post('http://localhost:3001/complaintAdd', data, header);
-        let url = process.env.BASE_API + '/complaintAdd';
+        let url = import.meta.env.VITE_BASE_API + '/complaintAdd';
         const response = await axios.post(url, data, header);
         if (response.status === 200) {
           this.successMessage = `Complaint ${response.data.data.complaintId} added successfully!`;
@@ -158,7 +161,7 @@ export default {
     },
     async fetchMembers() {
       try {
-        let url = process.env.BASE_API + '/get/grievance-members'
+        let url = import.meta.env.VITE_BASE_API + '/get/grievance-members'
         // const response = await axios.get('http://localhost:3001/get/grievance-members');
         const response = await axios.get(url,{
         headers: {

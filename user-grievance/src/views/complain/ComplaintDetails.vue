@@ -19,7 +19,7 @@
         <h4>Complaint Details</h4>
       </CCol>
       <CCol class="text-end">
-        <CButton color="dark" @click="goBack">
+        <CButton :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="goBack">
           <CIcon icon="cil-chevron-circle-left-alt" />
           <span style="padding: 0 5px">Back</span>
         </CButton>
@@ -29,24 +29,27 @@
     <CRow class="mb-3">
       <CFormLabel for="complaintCategory" class="col-sm-3 col-form-label fw-medium">Complaint Category:</CFormLabel>
       <CCol class="col-sm">
-        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintCategory" v-model="complaint.category" />
+        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintCategory"
+          v-model="complaint.category" />
       </CCol>
     </CRow>
-    
+
     <CRow class="mb-3">
       <CFormLabel for="complaintPriority" class="col-sm-3 col-form-label fw-medium">Complaint Priority:</CFormLabel>
       <CCol class="col-sm">
-        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintPriority" v-model="complaint.priority" />
+        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintPriority"
+          v-model="complaint.priority" />
       </CCol>
     </CRow>
-    
+
     <CRow class="mb-3 row">
       <CFormLabel for="complaintStatus" class="col-sm-3 col-form-label fw-medium">Complaint Status:</CFormLabel>
       <CCol class="col-sm">
-        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintStatus" v-model="complaint.complaintStatus"/>
+        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintStatus"
+          v-model="complaint.complaintStatus" />
       </CCol>
     </CRow>
-    
+
     <CRow class="mb-3 row">
       <CFormLabel for="document" class="col-sm-3 col-form-label fw-medium">Document:</CFormLabel>
       <CCol class="col-sm">
@@ -58,55 +61,45 @@
     </CRow>
 
     <CRow class="mb-3" v-if="(complaint.communicationTimeStamps.length && complaint.communicationTimeStamps[0])">
-      <CFormLabel for="complaintInitiatedAt" class="col-sm-3 col-form-label fw-medium">Complaint Initiated At:</CFormLabel>
+      <CFormLabel for="complaintInitiatedAt" class="col-sm-3 col-form-label fw-medium">Complaint Initiated At:
+      </CFormLabel>
       <CCol class="col-sm">
-        <CFormInput type="text" readonly class="form-control-plaintext text-justify fw-medium" id="complaintInitiatedAt" :value="convertDate(complaint.communicationTimeStamps[0])" />
+        <CFormInput type="text" readonly class="form-control-plaintext text-justify fw-medium" id="complaintInitiatedAt"
+          :value="convertDate(complaint.communicationTimeStamps[0])" />
       </CCol>
     </CRow>
-    
+
     <CRow class="mb-3">
-      <CFormLabel for="complaintDescription" class="col-sm-3 col-form-label fw-medium">Complaint Description:</CFormLabel>
+      <CFormLabel for="complaintDescription" class="col-sm-3 col-form-label fw-medium">Complaint Description:
+      </CFormLabel>
       <CCol class="col-sm">
-        <p readonly class="form-control-plaintext text-justify" id="complaintDescription">{{ complaint.description[0] }}</p>
+        <p readonly class="form-control-plaintext text-justify" id="complaintDescription">{{ complaint.description[0] }}
+        </p>
       </CCol>
     </CRow>
-    
+
     <CRow class="mb-3">
       <CFormLabel for="complaintRecipient" class="col-sm-3 col-form-label fw-medium">Complaint Recipient:</CFormLabel>
       <CCol class="col-sm">
-        <CFormInput 
-          type="text" 
-          readonly 
-          class="form-control-plaintext" 
-          id="complaintRecipient" 
-          :value="complaint.complaintRecipient.firstName + ' ' + complaint.complaintRecipient.lastName" 
-        />
+        <CFormInput type="text" readonly class="form-control-plaintext" id="complaintRecipient"
+          :value="complaint.complaintRecipient.firstName + ' ' + complaint.complaintRecipient.lastName" />
       </CCol>
     </CRow>
-    
+
     <CRow class="mb-3">
       <CFormLabel for="response" class="col-sm-3 col-form-label fw-medium">Response:</CFormLabel>
       <CCol class="col-sm">
-        <CFormInput 
-          type="text" 
-          readonly 
-          class="form-control-plaintext" 
-          id="response" 
-          :value="complaint.remarks[0] || 'Not Received Yet'" 
-        />
+        <CFormInput type="text" readonly class="form-control-plaintext" id="response"
+          :value="complaint.remarks[0] || 'Not Received Yet'" />
       </CCol>
     </CRow>
-    
-    <CRow class="mb-3 " v-if="(complaint.remarks.length && complaint.communicationTimeStamps.length && complaint.communicationTimeStamps[0])">
+
+    <CRow class="mb-3 "
+      v-if="(complaint.remarks.length && complaint.communicationTimeStamps.length && complaint.communicationTimeStamps[0])">
       <CFormLabel for="firstResponseAt" class="col-sm-3 col-form-label fw-medium">First Response At:</CFormLabel>
       <CCol class="col-sm">
-        <CFormInput 
-          type="text" 
-          readonly 
-          class="form-control-plaintext fw-medium" 
-          id="firstResponseAt"
-          :value="convertDate(complaint.communicationTimeStamps[1])" 
-        />
+        <CFormInput type="text" readonly class="form-control-plaintext fw-medium" id="firstResponseAt"
+          :value="convertDate(complaint.communicationTimeStamps[1])" />
       </CCol>
     </CRow>
 
@@ -203,13 +196,13 @@
                 <p>
                   <span class="text-primary fw-bold">You:[{{ '[' +
                     complainerTimeStamps[index] ? convertDate(complainerTimeStamps[index]) : '' + ']' }} ]</span> {{
-                      message.description }}
+                  message.description }}
                 </p>
                 <p v-if="message.remark">
                   <span class="text-secondary fw-bold">{{ complaint.complaintRecipient.firstName + ' ' +
                     complaint.complaintRecipient.lastName }}:[ {{ '[' +
-                      complaineeTimeStamps[index] ? convertDate(complaineeTimeStamps[index]) : '' + ']' }} ]</span> {{
-                      message.remark }}
+                    complaineeTimeStamps[index] ? convertDate(complaineeTimeStamps[index]) : '' + ']' }} ]</span> {{
+                  message.remark }}
                 </p>
               </div>
             </CCol>
@@ -233,11 +226,11 @@
         <CRow v-if="complaint.remarks[0] && complaint.complaintStatus !== 'Resolved'" class="mt-3">
           <CCol xs="9" class="align-items-start">
             <p class="text-danger fw-medium">
-              If your complaint has been resolved, you can edit it and update the status to "Resolved".
+              Once your complaint is resolved, you can update it and set the status to 'Resolved'.
             </p>
           </CCol>
           <CCol xs="1">
-            <CButton class="px-2 py-1" style="width: 50px;" color="dark" @click="goToEditComplaint(complaint)"
+            <CButton class="px-2 py-1" style="width: 50px;" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="goToEditComplaint(complaint)"
               title="Edit Complaint">
               <CIcon icon="cil-pencil" />
             </CButton>
@@ -251,7 +244,7 @@
             </p>
           </CCol>
           <CCol xs="1">
-            <CButton class="px-2 py-1" style="width: 50px;" color="dark" @click="manageAlert" title="Appeal Form">
+            <CButton class="px-2 py-1" style="width: 50px;" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="manageAlert" title="Appeal Form">
               Yes
             </CButton>
           </CCol>
@@ -271,7 +264,7 @@
                   required />
               </CCol>
               <CCol xs="2" class="text-end">
-                <CButton type="submit" color="dark" :disabled="!appealMessage">Send Appeal</CButton>
+                <CButton type="submit" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" :disabled="!appealMessage">Send Appeal</CButton>
               </CCol>
             </CRow>
           </CForm>
@@ -323,6 +316,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'ComplaintDetails',
@@ -349,11 +344,12 @@ export default {
   },
   computed: {
     ...mapState(['token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchComplaint() {
       try {
-        let url = process.env.BASE_API + '/get/complaint/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/get/complaint/' + this.$route.params.id
         //const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
         const response = await axios.get(url, {
           headers: {
@@ -381,7 +377,7 @@ export default {
     async sendAppeal() {
       try {
         this.showAppealForm = false;
-        let url = process.env.BASE_API + '/update/complaint/' + this.$route.params.id + '/appeal'
+        let url = import.meta.env.VITE_BASE_API + '/update/complaint/' + this.$route.params.id + '/appeal'
         // const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}/appeal`, {
         const response = await axios.put(url, {
           appealMessage: this.appealMessage

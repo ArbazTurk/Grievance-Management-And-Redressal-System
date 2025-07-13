@@ -53,7 +53,7 @@
               </CBadge>
             </CTableDataCell>
             <CTableDataCell>
-              <CButton class="px-2 py-1" color="dark" @click="goToEditUser(user)" title="Edit User">
+              <CButton class="px-2 py-1" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="goToEditUser(user)" title="Edit User">
                 <CIcon name="cil-pencil" />
               </CButton>
             </CTableDataCell>
@@ -110,6 +110,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'ManageUser',
@@ -123,6 +125,7 @@ export default {
   },
   computed: {
     ...mapState(['token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchUsers(resetPage = false) {
@@ -130,7 +133,7 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = process.env.BASE_API + '/users'
+        let url = import.meta.env.VITE_BASE_API + '/users'
         //const response = await axios.get('http://localhost:3001/users', {
         const response = await axios.get(url, {
           headers: {

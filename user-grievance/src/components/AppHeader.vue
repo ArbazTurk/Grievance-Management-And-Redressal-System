@@ -1,8 +1,7 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useColorModes } from '@coreui/vue'
 import { useStore } from 'vuex'
-
 // import AppBreadcrumb from '@/components/AppBreadcrumb.vue'
 import AppHeaderDropdownAccnt from '@/components/AppHeaderDropdownAccnt.vue'
 import { useSidebarStore } from '@/stores/sidebar.js'
@@ -11,17 +10,14 @@ import { useThemeStore } from '@/stores/theme.js'
 const headerClassNames = ref('mb-4 p-0')
 const { colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
 const sidebar = useSidebarStore()
-
 const themeStore = useThemeStore()
 
 const currentTime = ref('')
 const store = useStore()
-const userName = store.state.userName
+const userName = computed(() => store.state.userName)
 
 const changeTheme = (newTheme) => {
-  // CoreUI के विज़ुअल थीम और localStorage को अपडेट करें
   setColorMode(newTheme)
-  // अपने Pinia स्टोर की स्टेट को भी अपडेट करें
   themeStore.toggleTheme(newTheme)
 }
 
@@ -107,7 +103,6 @@ onMounted(() => {
             </CDropdownItem>
           </CDropdownMenu> -->
           <CDropdownMenu>
-            <!-- 4. अब `setColorMode` की जगह नए `changeTheme` फंक्शन को कॉल करें -->
             <CDropdownItem 
               :active="colorMode === 'light'" 
               class="d-flex align-items-center" 

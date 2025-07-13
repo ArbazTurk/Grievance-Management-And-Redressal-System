@@ -57,7 +57,7 @@
               <!-- <CButton class="px-2 py-1" color="dark" @click="goToResolveComplaint(complaint)" title="Resolve Complaint">
               <CIcon icon="cil-pencil" />
             </CButton> -->
-              <CButton class="px-2 py-1" color="dark" @click="viewComplaintDetails(complaint)"
+              <CButton class="px-2 py-1" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="viewComplaintDetails(complaint)"
                 title="View Complaint Details">
                 <font-awesome-icon icon='fa-regular fa-eye' />
               </CButton>
@@ -86,6 +86,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'ViewComplaints',
@@ -99,6 +101,7 @@ export default {
   },
   computed: {
     ...mapState(['_id', 'token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchComplaints(resetPage = false) {
@@ -106,7 +109,7 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = process.env.BASE_API + '/' + this._id + '/complaints'
+        let url = import.meta.env.VITE_BASE_API + '/' + this._id + '/complaints'
         const response = await axios.get(url, {
           // const response = await axios.get(`http://localhost:3001/${this._id}/complaints`, {
           headers: {

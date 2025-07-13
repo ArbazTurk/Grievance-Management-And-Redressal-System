@@ -18,7 +18,7 @@
         <h4>Complaint Details</h4>
       </CCol>
       <CCol class="text-end">
-        <CButton color="dark" @click="goBack">
+        <CButton :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="goBack">
           <CIcon icon="cil-chevron-circle-left-alt" />
           <span style="padding: 0 5px">Back</span>
         </CButton>
@@ -136,7 +136,8 @@
       <CCol class="col-sm-1">
         <CButton 
           type="button" 
-          color="dark" 
+          :color="theme === 'light' ? 'dark' : 'light'" 
+          variant="outline" 
           :disabled="!replyMessage" 
           @click="sendReply()"
         >Send Reply</CButton>
@@ -291,7 +292,7 @@
             </p>
           </CCol>
           <CCol xs="1">
-            <CButton class="px-2 py-1" style="width: 50px;" color="dark" @click="manageAlert" title="Reply Form">
+            <CButton class="px-2 py-1" style="width: 50px;" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" @click="manageAlert" title="Reply Form">
               Yes
             </CButton>
           </CCol>
@@ -311,7 +312,7 @@
                   required />
               </CCol>
               <CCol xs="2" class="text-end">
-                <CButton type="submit" color="dark" :disabled="!replyMessage">Send Reply</CButton>
+                <CButton type="submit" :color="theme === 'light' ? 'dark' : 'light'" variant="outline" :disabled="!replyMessage">Send Reply</CButton>
               </CCol>
             </CRow>
           </CForm>
@@ -363,6 +364,8 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'ComplaintDetails',
@@ -389,11 +392,12 @@ export default {
   },
   computed: {
     ...mapState(['token']),
+    ...piniaMapState(useThemeStore, ['theme']),
   },
   methods: {
     async fetchComplaint() {
       try {
-        let url = process.env.BASE_API + '/get/complaint/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/get/complaint/' + this.$route.params.id
         // const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
         const response = await axios.get(url, {
           headers: {
@@ -422,7 +426,7 @@ export default {
     async sendReply() {
       try {
         this.showReplyForm = false;
-        let url = process.env.BASE_API + '/update/complaint/' + this.$route.params.id + '/reply'
+        let url = import.meta.env.VITE_BASE_API + '/update/complaint/' + this.$route.params.id + '/reply'
         const response = await axios.put(url, {
           // const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}/reply`, {
           replyMessage: this.replyMessage

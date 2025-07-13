@@ -59,7 +59,7 @@
       </CCol>
       <CCol xs="12" class="d-flex justify-content-center gap-4 my-5">
         <CButton class="px-3 text-white" type="button" color="danger" @click="cancelEdit">Cancel</CButton>
-        <CButton class="px-3" type="submit" color="dark">Update</CButton>
+        <CButton class="px-3" type="submit" :color="theme === 'light' ? 'dark' : 'light'" variant="outline">Update</CButton>
       </CCol>
     </CForm>
     <transition name="slide-fade">
@@ -73,9 +73,14 @@
 
 <script>
 import axios from 'axios';
+import { mapState as piniaMapState } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 export default {
   name: 'ResolveComplaint',
+  computed: {
+    ...piniaMapState(useThemeStore, ['theme']),
+  },
   data() {
     return {
       complaint: {
@@ -92,7 +97,7 @@ export default {
   methods: {
     async fetchComplaint() {
       try {
-        let url = process.env.BASE_API + '/get/complaint/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/get/complaint/' + this.$route.params.id
         // const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
         const response = await axios.get(url);
         this.complaint = response.data;
@@ -115,7 +120,7 @@ export default {
         //     'Content-Type': 'multipart/form-data',
         //   },
         // });
-        let url = process.env.BASE_API + '/update/complaint/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/update/complaint/' + this.$route.params.id
         // const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}`, {remarks:this.complaint.remarks[0]});
         const response = await axios.put(url, {remarks:this.complaint.remarks[0]});
         if (response.status === 200) {

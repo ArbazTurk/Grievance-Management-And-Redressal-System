@@ -22,10 +22,18 @@
                 <div class="image d-flex justify-content-center">
                   <img src="/RDLOGOBGREMOVED.png" alt="Searching..." class="text-center" />
                 </div>
-                <!-- <CAlert v-if="successMessage" color="success" class="d-flex align-items-center p-2 content-top ">
-                  <CIcon icon="cil-check-circle" class="flex-shrink-0 me-2" width="24" height="24" />
-                  {{ successMessage }}
-                </CAlert> -->
+                <transition name="slide-fade">
+                  <CAlert v-if="errorMessage" color="danger" class="d-flex align-items-center mt-2 alert-slide">
+                    <CIcon icon="cil-exclamation-circle" class="flex-shrink-0 me-2" width="24" height="24" />
+                    {{ errorMessage }}
+                  </CAlert>
+                </transition>
+                <transition name="slide-fade">
+                  <CAlert v-if="successMessage" color="success" class="d-flex align-items-center mt-2 alert-slide">
+                    <CIcon icon="cil-check-circle" class="flex-shrink-0 me-2" width="24" height="24" />
+                    {{ successMessage }}
+                  </CAlert>
+                </transition>
                 <div>
                   <h2 class="grievance text-center mt-5">Welcome to RD Grievance Management</h2>
                 </div>
@@ -51,7 +59,8 @@
 
                 <CInputGroup class="">
                   <CInputGroupText>@</CInputGroupText>
-                  <CFormInput placeholder="Email" autocomplete="email" name="email" v-model="email" required />
+                  <CFormInput type="email" placeholder="Email" autocomplete="email" name="email" v-model="email"
+                    required />
                 </CInputGroup>
 
                 <div class="mb-4 text-danger">
@@ -62,7 +71,8 @@
                   <CInputGroupText>
                     <CIcon icon="cil-phone" />
                   </CInputGroupText>
-                  <CFormInput placeholder="Mobile" autocomplete="mobile" name="mobileNo" v-model="mobileNo" required />
+                  <CFormInput type="tel" placeholder="Mobile" autocomplete="mobile" name="mobileNo" v-model="mobileNo"
+                    maxlength="10" pattern="\d{10}" inputmode="numeric" required />
                 </CInputGroup>
 
                 <CInputGroup class="mb-4">
@@ -103,9 +113,16 @@
                 </CInputGroup>
                 <p class="mb-4 text-danger">Passwords must match.</p>
                 <CCol class="d-flex justify-content-center gap-4 mt-3 mb-4">
-                  <CButton class="px-3 text-white" type="button" color="danger" @click="cancelCreateAcc">Cancel
+                  <CButton class="px-3 text-white" type="button" color="danger" @click="cancelCreateAcc"
+                    :disabled="loading">Cancel
                   </CButton>
-                  <CButton class="px-4" type="submit" color="dark">Create Account</CButton>
+                  <CButton class="px-4" type="submit" :color="theme === 'light' ? 'dark' : 'light'" variant="outline"
+                    :disabled="loading">
+                    <span v-if="loading" class="spinner-border spinner-border-sm" role="status"
+                      aria-hidden="true"></span>
+                    <span v-if="loading"> Creating...</span>
+                    <span v-else>Create Account</span>
+                  </CButton>
                 </CCol>
               </CForm>
             </CCardBody>
@@ -126,6 +143,9 @@
 import axios from 'axios'
 // import router from '../router'
 // import '@fortawesome/fontawesome-free';
+import { mapState } from 'pinia'
+import { useThemeStore } from '@/stores/theme'
+
 export default {
   name: 'SignUp',
   data() {
@@ -142,8 +162,13 @@ export default {
       showPassword: false,
       showConfirmPassword: false,
       successMessage: '',
+      errorMessage: '',
       showModal: false,
+      loading: false,
     }
+  },
+  computed: {
+    ...mapState(useThemeStore, ['theme']),
   },
   methods: {
     togglePasswordVisibility(fieldName) {
@@ -151,6 +176,7 @@ export default {
     },
     async createAcc() {
       try {
+        this.loading = true;
         // this.passwordValid = this.password.length >= 6;
         this.confirmPasswordValid = this.password === this.confirmPassword;
         if (this.confirmPasswordValid) {
@@ -162,7 +188,7 @@ export default {
             role: this.role,
             password: this.password,
           }
-          let url = process.env.BASE_API + '/signup'
+          let url = import.meta.env.VITE_BASE_API + '/signup'
           const response = await axios({
             method: 'post',
             url: url,
@@ -170,19 +196,42 @@ export default {
           })
           if (response.status === 200) {
             this.successMessage = 'Registration successful! Please check your email to verify your account.'
+            this.clearForm();
             setTimeout(() => {
               this.successMessage = ''
             }, 5000)
           }
         } else {
           this.showModal = true;
+          this.errorMessage = 'Password and Confirm Password do not match.';
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 5000);
         }
       } catch (err) {
-        console.log(err)
+        console.log(err);
+        this.errorMessage = 'An error occurred during registration. Please try again.';
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 5000);
+      } finally {
+        this.loading = false;
       }
     },
     cancelCreateAcc() {
       this.$router.push({ name: 'Member Login' });
+    },
+    clearForm() {
+      this.firstName = '';
+      this.lastName = '';
+      this.email = '';
+      this.mobileNo = '';
+      this.role = '';
+      this.password = '';
+      this.confirmPassword = '';
+      this.confirmPasswordValid = false;
+      this.showPassword = false;
+      this.showConfirmPassword = false;
     }
   },
 }
@@ -243,6 +292,7 @@ img {
     transform: translateX(0);
   }
 }
+
 .alert-slide {
   position: fixed;
   top: 10px;
@@ -256,6 +306,7 @@ img {
     opacity: 0;
     transform: translateX(100%);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
