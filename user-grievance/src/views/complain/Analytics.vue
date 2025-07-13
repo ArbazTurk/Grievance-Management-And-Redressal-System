@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     async fetchData() {
-      let url = process.env.BASE_API + '/' + this._id + '/complaint/analytics'
+      let url = import.meta.env.VITE_BASE_API + '/' + this._id + '/complaint/analytics'
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${this.token}`

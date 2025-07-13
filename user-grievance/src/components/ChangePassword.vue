@@ -117,7 +117,7 @@ export default {
     changePassword() {
       // this.newPasswordValid = this.formData.newPassword.length >= 6;
       this.confirmPasswordValid = this.formData.newPassword === this.formData.confirmPassword;
-      let url = process.env.BASE_API + '/change/password/' + this._id
+      let url = import.meta.env.VITE_BASE_API + '/change/password/' + this._id
       //axios.put(`http://localhost:3001/change/password/${this._id}`, this.formData)
       if (this.confirmPasswordValid) {
         axios.put(url, this.formData, {

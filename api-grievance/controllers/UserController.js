@@ -3,16 +3,16 @@ let User = require("../models/User.js");
 let bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../config/mailer");
+const { forgotPasswordTemplate, emailVerificationTemplate } = require("../helper/email");
 
 let signup = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, firstName} = req.body;
     let existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).send("User Already Exists...");
     }
-
     const token = jwt.sign(req.body, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
@@ -21,7 +21,7 @@ let signup = async (req, res) => {
     const mailSent = await sendMail(
       email,
       "Verify Your Email Address",
-      `<p>Please click the link to verify your email: <a href="${verificationLink}">${verificationLink}</a></p>`
+      emailVerificationTemplate(firstName, verificationLink)
     );
 
     if (!mailSent) {
@@ -233,7 +233,7 @@ const forgotPassword = async (req, res) => {
     const mailSent = await sendMail(
       email,
       "Password Reset Request",
-      `<p>You requested a password reset. Click the link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`
+      forgotPasswordTemplate(user.firstName, resetLink)
     );
 
     if (!mailSent) {
