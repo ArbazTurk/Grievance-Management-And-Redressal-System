@@ -35,8 +35,6 @@ let getComplaintsByGrievanceMember = async (req, res) => {
     const complaints = await Complaint.find({
       complaintRecipient: req.params.id,
       $or: [
-        // { 'complaintBy.firstName': searchRegex },
-        // { 'complaintBy.lastName': searchRegex },
         { complaintBy: { $in: userIds } },
         { category: searchRegex },
         { complaintStatus: searchRegex },
@@ -51,8 +49,6 @@ let getComplaintsByGrievanceMember = async (req, res) => {
     const count = await Complaint.countDocuments({
       complaintRecipient: req.params.id,
       $or: [
-        // { 'complaintBy.firstName': searchRegex },
-        // { 'complaintBy.lastName': searchRegex },
         { complaintBy: { $in: userIds } },
         { category: searchRegex },
         { complaintStatus: searchRegex },
@@ -182,13 +178,11 @@ let updateComplaintById = async (req, res) => {
       return res.status(404).json({ error: "Complaint not found" });
     }
 
-    // Handle document update
     if (req.file) {
       const upload = await Upload.uploadFile(req.file.path);
       complaint.document = upload.secure_url;
     }
     if (req.body.remarks) {
-      // complaint.remarks.push(req.body.remarks);
       complaint.remarks[0] = req.body.remarks;
       complaint.complaintStatus = "InProgress";
       complaint.communicationTimeStamps.push(new Date());

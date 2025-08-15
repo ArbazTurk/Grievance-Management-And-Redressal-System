@@ -133,7 +133,7 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/complaints'
+        let url = import.meta.env.VITE_BASE_API + '/complaint/get/complaints'
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`,
@@ -165,7 +165,7 @@ export default {
     },
     async confirmDeleteComplaint() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/delete/complaint/' + this.complaintIdToDelete;
+        let url = import.meta.env.VITE_BASE_API + '/complaint/delete/complaint/' + this.complaintIdToDelete;
         const response = await axios.delete(url, {
           headers: {
             Authorization: `Bearer ${this.token}`
@@ -189,7 +189,7 @@ export default {
 
     //   } else {
     //     try {
-    //       let url = process.env.BASE_API + '/delete/complaint/' + complaint._id
+    //       let url = process.env.BASE_API + '/complaint/delete/complaint/' + complaint._id
     //       axios.delete(url)
     //     } catch (error) {
     //       console.error(error);

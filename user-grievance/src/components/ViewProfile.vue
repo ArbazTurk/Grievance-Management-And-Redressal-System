@@ -89,7 +89,7 @@ export default {
     
     async fetchUserProfile() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/user/' + this._id
+        let url = import.meta.env.VITE_BASE_API + '/user/get/user/' + this._id
         const response = await axios.get(url,{
           headers: {
             Authorization: `Bearer ${this.token}`
@@ -127,7 +127,7 @@ export default {
           formData.append('file', this.$refs.file.files[0]);
         }
 
-        let url = import.meta.env.VITE_BASE_API + `/edit/user-profile/${this._id}`;
+        let url = import.meta.env.VITE_BASE_API + `/user/edit/user-profile/${this._id}`;
         const response = await axios.put(url, formData, {
           headers: {
             Authorization: `Bearer ${this.token}`,

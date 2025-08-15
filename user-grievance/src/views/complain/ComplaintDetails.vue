@@ -349,8 +349,8 @@ export default {
   methods: {
     async fetchComplaint() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/complaint/' + this.$route.params.id
-        //const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
+        let url = import.meta.env.VITE_BASE_API + '/complaint/get/complaint/' + this.$route.params.id
+        //const response = await axios.get(`http://localhost:3001/complaint/get/complaint/${this.$route.params.id}`);
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`
@@ -377,8 +377,8 @@ export default {
     async sendAppeal() {
       try {
         this.showAppealForm = false;
-        let url = import.meta.env.VITE_BASE_API + '/update/complaint/' + this.$route.params.id + '/appeal'
-        // const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}/appeal`, {
+        let url = import.meta.env.VITE_BASE_API + '/complaint/update/complaint/' + this.$route.params.id + '/appeal'
+        // const response = await axios.put(`http://localhost:3001/complaint/update/complaint/${this.$route.params.id}/appeal`, {
         const response = await axios.put(url, {
           appealMessage: this.appealMessage
         }, {

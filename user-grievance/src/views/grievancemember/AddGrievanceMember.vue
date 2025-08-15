@@ -80,8 +80,8 @@ export default {
   methods: {
     async handleSubmit() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/add/grievance-member'
-        //const response = await axios.post('http://localhost:3001/add/grievance-member', {
+        let url = import.meta.env.VITE_BASE_API + '/admin/add/grievance-member'
+        //const response = await axios.post('http://localhost:3001/admin/add/grievance-member', {
         const response = await axios.post(url, {
           firstName: this.firstName,
           lastName: this.lastName,

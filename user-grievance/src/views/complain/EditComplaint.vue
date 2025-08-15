@@ -145,13 +145,13 @@ export default {
   methods: {
     async fetchComplaint() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/complaint/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/complaint/get/complaint/' + this.$route.params.id
         const response = await axios.get(url,{
         headers: {
           Authorization: `Bearer ${this.token}`
         }
       });
-        //const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
+        //const response = await axios.get(`http://localhost:3001/complaint/get/complaint/${this.$route.params.id}`);
         this.complaint = response.data;
         if (response.data.complaintStatus === 'Resolved') {
           this.isResolved = true
@@ -180,9 +180,9 @@ export default {
         } else {
           formData.append('file', this.complaint.document);
         }
-        let url = import.meta.env.VITE_BASE_API + '/update/complaint/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/complaint/update/complaint/' + this.$route.params.id
         response = await axios.put(url, formData, {
-          //const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}`, formData, {
+          //const response = await axios.put(`http://localhost:3001/complaint/update/complaint/${this.$route.params.id}`, formData, {
           headers: {
             Authorization: `Bearer ${this.token}`,
             'Content-Type': 'multipart/form-data',
@@ -334,7 +334,7 @@ export default {
   methods: {
     async fetchComplaint() {
       try {
-        const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
+        const response = await axios.get(`http://localhost:3001/complaint/get/complaint/${this.$route.params.id}`);
         this.complaint = response.data;
       } catch (error) {
         console.error(error);
@@ -354,7 +354,7 @@ export default {
           formData.append('file', this.complaint.document);
         }
 
-        const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}`, formData, {
+        const response = await axios.put(`http://localhost:3001/complaint/update/complaint/${this.$route.params.id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

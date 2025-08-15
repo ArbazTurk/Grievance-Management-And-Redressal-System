@@ -130,9 +130,9 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = import.meta.env.VITE_BASE_API + '/list/grievance-members';
+        let url = import.meta.env.VITE_BASE_API + '/admin/list/grievance-members';
         const response = await axios.get(url, {
-          //const response = await axios.get('http://localhost:3001/list/grievance-members', {
+          //const response = await axios.get('http://localhost:3001/admin/list/grievance-members', {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },

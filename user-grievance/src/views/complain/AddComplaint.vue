@@ -133,8 +133,8 @@ export default {
           data.append('file', '');
         }
 
-        // const response = await axios.post('http://localhost:3001/complaintAdd', data, header);
-        let url = import.meta.env.VITE_BASE_API + '/complaintAdd';
+        // const response = await axios.post('http://localhost:3001/complaint/complaintAdd', data, header);
+        let url = import.meta.env.VITE_BASE_API + '/complaint/complaintAdd';
         const response = await axios.post(url, data, header);
         if (response.status === 200) {
           this.successMessage = `Complaint ${response.data.data.complaintId} added successfully!`;
@@ -161,8 +161,8 @@ export default {
     },
     async fetchMembers() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/grievance-members'
-        // const response = await axios.get('http://localhost:3001/get/grievance-members');
+        let url = import.meta.env.VITE_BASE_API + '/admin/get/grievance-members'
+        // const response = await axios.get('http://localhost:3001/admin/get/grievance-members');
         const response = await axios.get(url,{
         headers: {
           Authorization: `Bearer ${this.token}`

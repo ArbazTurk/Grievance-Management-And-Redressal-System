@@ -1,16 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const UserController = require("../controllers/UserController.js");
-// router.use(express.json());
-// router.use(express.urlencoded({ extended: false }));
-// const upload = multer({ dest: 'uploads/' });
 const multer = require("multer");
 const auth = require("../middleware/auth.js");
-// const bodyParser = require("body-parser");
-// const path = require("path");
-
-// router.use(bodyParser.urlencoded({ extended: true }));
-// router.use(express.static(path.resolve(__dirname, "public")));
 
 const uploader = multer({
   storage: multer.diskStorage({}),

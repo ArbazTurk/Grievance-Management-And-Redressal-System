@@ -97,8 +97,8 @@ export default {
   methods: {
     async fetchComplaint() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/complaint/' + this.$route.params.id
-        // const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
+        let url = import.meta.env.VITE_BASE_API + '/complaint/get/complaint/' + this.$route.params.id
+        // const response = await axios.get(`http://localhost:3001/complaint/get/complaint/${this.$route.params.id}`);
         const response = await axios.get(url);
         this.complaint = response.data;
       } catch (error) {
@@ -115,13 +115,13 @@ export default {
         // formData.append('remarks', this.complaint.remarks);
         // formData.append('document', this.complaint.document);
 
-        // const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}`, formData, {
+        // const response = await axios.put(`http://localhost:3001/complaint/update/complaint/${this.$route.params.id}`, formData, {
         //   headers: {
         //     'Content-Type': 'multipart/form-data',
         //   },
         // });
-        let url = import.meta.env.VITE_BASE_API + '/update/complaint/' + this.$route.params.id
-        // const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}`, {remarks:this.complaint.remarks[0]});
+        let url = import.meta.env.VITE_BASE_API + '/complaint/update/complaint/' + this.$route.params.id
+        // const response = await axios.put(`http://localhost:3001/complaint/update/complaint/${this.$route.params.id}`, {remarks:this.complaint.remarks[0]});
         const response = await axios.put(url, {remarks:this.complaint.remarks[0]});
         if (response.status === 200) {
           this.successMessage = `Complaint ${response.data.complaintId} updated successfully!`;

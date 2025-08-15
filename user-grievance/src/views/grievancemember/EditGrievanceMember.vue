@@ -72,13 +72,13 @@ export default {
   methods: {
     async fetchMember() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/grievance-member/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/admin/get/grievance-member/' + this.$route.params.id
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`
           }
         });
-        // const response = await axios.get(`http://localhost:3001/get/grievance-member/${this.$route.params.id}`);
+        // const response = await axios.get(`http://localhost:3001/admin/get/grievance-member/${this.$route.params.id}`);
         this.member = response.data;
       } catch (error) {
         console.error(error);
@@ -86,13 +86,13 @@ export default {
     },
     async updateMember() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/update/grievance-member/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/admin/update/grievance-member/' + this.$route.params.id
         const response = await axios.put(url, { status: this.member.status }, {
           headers: {
             Authorization: `Bearer ${this.token}`
           }
         });
-        // const response = await axios.put(`http://localhost:3001/update/grievance-member/${this.$route.params.id}`, { status: this.member.status });
+        // const response = await axios.put(`http://localhost:3001/admin/update/grievance-member/${this.$route.params.id}`, { status: this.member.status });
         if (response.status === 200) {
           this.successMessage = 'Grievance member updated successfully!';
         }

@@ -133,8 +133,8 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = import.meta.env.VITE_BASE_API + '/users'
-        //const response = await axios.get('http://localhost:3001/users', {
+        let url = import.meta.env.VITE_BASE_API + '/user/users'
+        //const response = await axios.get('http://localhost:3001/user/users', {
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`,

@@ -154,10 +154,10 @@ export default {
           email: this.email,
           password: this.password,
         };
-        let url = import.meta.env.VITE_BASE_API + '/login';
+        let url = import.meta.env.VITE_BASE_API + '/user/login';
         // console.log(url, 'url')
 
-        // const response = await axios.post('http://localhost:3001/login', data);
+        // const response = await axios.post('http://localhost:3001/user/login', data);
         const response = await axios.post(url, data);
         if (response.data.success) {
           const userId = response.data.user._id;
@@ -203,7 +203,7 @@ export default {
 
       try {
         const data = { email: this.email };
-        let url = import.meta.env.VITE_BASE_API + '/forgot-password';
+        let url = import.meta.env.VITE_BASE_API + '/user/forgot-password';
         const response = await axios.post(url, data);
 
         if (response.data.success) {

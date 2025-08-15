@@ -120,7 +120,7 @@ export default {
       }
 
       try {
-        const url = `${import.meta.env.VITE_BASE_API}/reset-password`;
+        const url = `${import.meta.env.VITE_BASE_API}/user/reset-password`;
         const response = await axios.post(url, {
           token,
           newPassword: this.password,

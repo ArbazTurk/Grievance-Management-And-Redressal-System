@@ -86,7 +86,7 @@ export default {
     }
 
     try {
-      const url = `${import.meta.env.VITE_BASE_API}/verify-email`;
+      const url = `${import.meta.env.VITE_BASE_API}/user/verify-email`;
       const response = await axios.post(url, { token });
       if (response.data.success) {
         this.successMessage = response.data.message || 'Your account has been successfully verified.';

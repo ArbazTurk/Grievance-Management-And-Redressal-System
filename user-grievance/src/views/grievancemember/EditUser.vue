@@ -79,13 +79,13 @@ export default {
   methods: {
     async fetchUser() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/user/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/user/get/user/' + this.$route.params.id
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`
           }
         });
-        // const response = await axios.get(`http://localhost:3001/get/user/${this.$route.params.id}`);
+        // const response = await axios.get(`http://localhost:3001/user/get/user/${this.$route.params.id}`);
         this.user = response.data;
       } catch (error) {
         console.error(error);
@@ -93,10 +93,10 @@ export default {
     },
     async updateUser() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/update/user/' + this.$route.params.id
+        let url = import.meta.env.VITE_BASE_API + '/user/update/user/' + this.$route.params.id
         const response = await axios.put(url, {
           status: this.user.status,
-          // const response = await axios.put(`http://localhost:3001/update/user/${this.$route.params.id}`, { status: this.user.status,
+          // const response = await axios.put(`http://localhost:3001/user/update/user/${this.$route.params.id}`, { status: this.user.status,
           isVerified: this.user.isVerified,
         }, {
           headers: {

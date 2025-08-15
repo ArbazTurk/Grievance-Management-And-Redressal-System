@@ -3,11 +3,6 @@ const router = express.Router();
 const complaintController = require("../controllers/ComplaintController");
 const multer = require("multer");
 const auth = require("../middleware/auth");
-// const bodyParser = require("body-parser");
-// const path = require("path");
-
-// router.use(bodyParser.urlencoded({ extended: true }));
-// router.use(express.static(path.resolve(__dirname, "public")));
 
 const uploader = multer({
   storage: multer.diskStorage({}),

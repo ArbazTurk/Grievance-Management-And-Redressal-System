@@ -109,9 +109,9 @@ export default {
         this.currentPage = 1;
       }
       try {
-        let url = import.meta.env.VITE_BASE_API + '/' + this._id + '/complaints'
+        let url = import.meta.env.VITE_BASE_API + '/complaint/' + this._id + '/complaints'
         const response = await axios.get(url, {
-          // const response = await axios.get(`http://localhost:3001/${this._id}/complaints`, {
+          // const response = await axios.get(`http://localhost:3001/complaint/${this._id}/complaints`, {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },

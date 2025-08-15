@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const timestamps = require("mongoose-timestamps");
-// const sequence = require('mongoose-sequence');
 
 const ComplaintSchema = new mongoose.Schema({
   category: { type: String, required: true },
@@ -20,9 +19,8 @@ const ComplaintSchema = new mongoose.Schema({
 });
 
 
-ComplaintSchema.plugin(timestamps, { index: true }); // timestamps: true can also be used if not want to control indexing
+ComplaintSchema.plugin(timestamps, { index: true });
 
-// Pre-save middleware to generate unique ComplaintId
 ComplaintSchema.pre("save", async function (next) {
   if (this.isNew) {
     const lastComplaint = await mongoose
@@ -37,9 +35,6 @@ ComplaintSchema.pre("save", async function (next) {
   }
   next();
 });
-
-// ComplaintSchema.plugin(sequence, { incOnInsert: true, key: 'complaintId', prefix: 'C00' });
-// ComplaintSchema.plugin(sequence, { inc_field: 'complaintId', id: 'complaintIdNums', start_seq: 1 });
 
 const Complaint = mongoose.model("Complaint", ComplaintSchema);
 

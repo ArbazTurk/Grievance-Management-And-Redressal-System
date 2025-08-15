@@ -397,8 +397,8 @@ export default {
   methods: {
     async fetchComplaint() {
       try {
-        let url = import.meta.env.VITE_BASE_API + '/get/complaint/' + this.$route.params.id
-        // const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
+        let url = import.meta.env.VITE_BASE_API + '/complaint/get/complaint/' + this.$route.params.id
+        // const response = await axios.get(`http://localhost:3001/complaint/get/complaint/${this.$route.params.id}`);
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${this.token}`
@@ -426,9 +426,9 @@ export default {
     async sendReply() {
       try {
         this.showReplyForm = false;
-        let url = import.meta.env.VITE_BASE_API + '/update/complaint/' + this.$route.params.id + '/reply'
+        let url = import.meta.env.VITE_BASE_API + '/complaint/update/complaint/' + this.$route.params.id + '/reply'
         const response = await axios.put(url, {
-          // const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}/reply`, {
+          // const response = await axios.put(`http://localhost:3001/complaint/update/complaint/${this.$route.params.id}/reply`, {
           replyMessage: this.replyMessage
         }, {
           headers: {
@@ -625,7 +625,7 @@ export default {
   methods: {
     async fetchComplaint() {
       try {
-        const response = await axios.get(`http://localhost:3001/get/complaint/${this.$route.params.id}`);
+        const response = await axios.get(`http://localhost:3001/complaint/get/complaint/${this.$route.params.id}`);
         this.complaint = response.data;
       } catch (error) {
         console.error(error);
@@ -633,7 +633,7 @@ export default {
     },
     async sendAppeal() {
       try {
-        const response = await axios.put(`http://localhost:3001/update/complaint/${this.$route.params.id}/appeal`, {
+        const response = await axios.put(`http://localhost:3001/complaint/update/complaint/${this.$route.params.id}/appeal`, {
           appealMessage: this.appealMessage
         });
         if (response.status === 200) {

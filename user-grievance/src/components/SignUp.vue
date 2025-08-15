@@ -188,7 +188,7 @@ export default {
             role: this.role,
             password: this.password,
           }
-          let url = import.meta.env.VITE_BASE_API + '/signup'
+          let url = import.meta.env.VITE_BASE_API + '/user/signup'
           const response = await axios({
             method: 'post',
             url: url,
